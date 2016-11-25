@@ -1,62 +1,43 @@
-# Cours de Javascript : TD 3 - étape 2
+# Cours de Javascript : TD 3 - étape 3
 
 ## Cahier des charges
 
-Votre client vient de vous recontacter pour préciser le cahier des charges :
+Après avoir livré la commande du client, celui-ci revient vers vous et vous demande de rajouter :
 
-* [x] L'application doit être utilisable depuis un navigateur web.
-* [x] Le serveur doit être écrit en node.js.
-* [ ] Il ne doit pas y avoir de Javascript coté client.
-* [ ] Quand l'utilisateur arrive sur l'application, un formulaire pour créer un sondage doit lui être proposé.
-* [ ] Un sondage est constitué d'une question et de deux choix possibles.
-* [ ] Quand l'utilisateur se rend sur `/liste`, il doit trouver la liste de tous les sondages.
-* [ ] Dans la liste des sondages, il doit être rediriger vers la page du sondage.
-* [ ] Sur la page du sondage, il doit pouvoir répondre au sondage.
+* Un sondage peut avoir entre 2 et 10 réponses possibles. Il aimerait un bouton sur la page qui permet de rajouter les champs réponses un à un. Il accepte qu'il y est du Javascript pour ça dans la page.
+* Pour des raisons de sécurité, il aimerait que les données soient stockées sur le disque.
+* Il aimerait une interface de visualisation des résultats.
 
-Il vous a transmis des exemples de pages HTML à utiliser. Elles sont dans le dossier *views*.
+Ayant beaucoup plus confiance en vous, il vous laisse libre sur l'implémentation.
 
-## Retourner le formulaire de création d'un sondage.
+## La manipulation du DOM en Javascript
 
-À l'aide de la [document de Express](http://expressjs.com/fr/starter/static-files.html), fait en sorte que l'ouverture de http://localhost:8000/nouveau.html affiche le formulaire de création d'un sondage.
+Pour faire simple, le DOM est une structure de données qui permet de lire et de manipuler la structure HTML de la page.
 
-> ### Q1 - Que se passe-t'il quand vous validez le formulaire ? Pourquoi ?
+En Javascript, on peut accèder au DOM via l'object `document`. Pour avoir une idée exhaustive de ce que cet objet peut faire vous pouvez aller voir sa [documentation](exhaustive).
 
-## Traiter le formulaire
+Il y a trois fonctions qui vont nous être particulièrement utiles : [`document.createElement`](https://developer.mozilla.org/fr/docs/Web/API/Document/createElement), [`document.getElementById`](https://developer.mozilla.org/fr/docs/Web/API/Document/getElementById) et [`element.appendChild`](https://developer.mozilla.org/en-US/docs/Web/API/Node/appendChild).
 
-À l'aide de la [documentation sur le routage](http://expressjs.com/fr/guide/routing.html), faite en sorte qu'un message "Formulaire reçu." apparaisse quand celui-ci est soumis.
+À l'aide de ces fonctions, de l'exemple du [cours](http://cours.reimert.fr/javascript.html#/27/1) et du reste de l'univers, modifier la page de création de sondages pour répondre à la demande du client.
 
-Il faut maintenant traiter les données reçues pour les stocker. En HTML, les données envoyées par un formulaire sont dans son *body*. Prenez connaissance de la [documentation de *req.body*](http://expressjs.com/fr/4x/api.html#req.body) et de [body-parser](https://github.com/expressjs/body-parser). Modifier votre code pour que lors de la réception d'un formulaire par le serveur, il affiche sont contenu dans la console.
+Pour simplifier l'écriture, vous pouvez écrire directement le code javascript dans une balise *script* du document HTML.
 
-> ### Q2 - Qu'est qu'un middleware ?
+## Base de données
 
-Notre but est d'afficher une liste des formulaires, il faut donc stocker ce formulaire. Pour le moment, on va le faire en mémoire. Déclarer au début de votre code un tableau vide appelé *sondages*. À chaque fois que le serveur reçoit un sondage, il doit le stocker dans ce tableau.
+Le fait que les sondages s'effacent à chaque modification du code ou relancement du serveur n'est pas acceptable en production et est désagréable en dévelopement. La solution est d'utiliser une base de données.
 
-> ### Q3 - Que ce passe-t'il quand vous modifier du code et que votre serveur redémarre ? Quelle serait la bonne solution ?
+Dans les technologies webs, les bases de données dites [NoSQL](https://fr.wikipedia.org/wiki/NoSQL) prennent une place de plus en plus importantes. Une des plus connue est [MongoDB](https://www.mongodb.com/fr).
 
-## Afficher la liste des formulaires
+Pour des raisons techniques et pratique comme le faite que MongoDB n'est pas forcèment installé sur votre machine, nous allons utiliser [NeDB](https://github.com/louischatriot/nedb) qui reprend un API proche de MongoDB.
 
-L'utilisateur peut créer des sondages et ils sont sauvegardés par votre serveur. Il faut maintenant afficher la liste des sondages.
+En utilisant la [documentation de NeDB](https://github.com/louischatriot/nedb), modifier votre code pour stocker les sondages dans la base de données.
 
-Pour ce faire, il faut lire votre base de données de sondage et les envoyer au navigateur. Vous pouvez faire cela en pur Javascript et en utilisant la fonction *res.send*.
+Cette base affecte automatiquement un *id* aux sondages. Vous pouvez vous en servir comme identifiant dans les urls de sondages.
 
-Mais quand la page devient complexe ou tout simplement pour séparer proprement le rendu du fonctionnement du serveur, il est pratique d'utiliser un moteur de modèle.
+## Dissocier la génération de la page HTML du code Javascript
+
+Quand la page HTML devient complexe ou tout simplement pour séparer proprement le rendu du fonctionnement du serveur, il est pratique d'utiliser un moteur de modèle.
 
 À l'aide de la [documentation des moteurs de modèle d'Express](http://expressjs.com/fr/guide/using-template-engines.html), de celle de [mustache-express](https://www.npmjs.com/package/mustache-express) et de celle de [mustache](https://github.com/janl/mustache.js/), affichez la liste des sondages.
 
-> ### Q4 - Comment fait-on une boucle en mustache ?
-
-## Répondre aux sondages
-
-En appliquant les connaissances acquises précédemment, affichez les sondages.
-
-Pour vous aidez, lisez l'[exemple de base de l'utilisation de l'object Request](http://expressjs.com/fr/4x/api.html#req).
-
-N'oubliez pas de traiter le cas où le formulaire n'est pas traité.
-
-## Enregistrer les réponses aux sondage
-
-En appliquant les connaissances acquises précédemment, enregistrez les réponses aux sondages.
-
-## Cahier des charges rempli
-
-Vous avez maintenant rempli le cahier des charges du client. Vous pouvez passer à l'étape suivante : `git checkout etape-3`
+> ### Q1 - Comment fait-on une boucle en mustache ?
