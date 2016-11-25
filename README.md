@@ -39,11 +39,24 @@ L'utilisateur peut créer des sondages et ils sont sauvegardés par votre serveu
 
 Pour ce faire, il faut lire votre base de données de sondage et les envoyer au navigateur. Vous pouvez faire cela en pur Javascript et en utilisant la fonction *res.send*.
 
-Mais quand la page devient complexe ou tout simplement pour séparer proprement le rendu du fonctionnement du serveur, il est pratique d'utiliser un moteur de modèle.
+Pour vous faciliter cette tâche en Javascript, vous pouvez utiliser les chaînes de caractères utilisant l'[accent grave](https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Litt%C3%A9raux_gabarits) (\`) et l'[interpolation](https://fr.wikipedia.org/wiki/Interpolation). Exemple :
 
-À l'aide de la [documentation des moteurs de modèle d'Express](http://expressjs.com/fr/guide/using-template-engines.html), de celle de [mustache-express](https://www.npmjs.com/package/mustache-express) et de celle de [mustache](https://github.com/janl/mustache.js/), affichez la liste des sondages.
+```Javascript
+let html = `
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <title>Nouveau sondage</title>
+    </head>
+    <body>
+      ${votreCodeHtmlPensezAEtrePlusSubtil}
+    </body>
+</html>
+`;
+```
 
-> ### Q4 - Comment fait-on une boucle en mustache ?
+Nous verrons une autre solution pour faire cela à la prochaine étape.
 
 ## Répondre aux sondages
 
@@ -51,7 +64,7 @@ En appliquant les connaissances acquises précédemment, affichez les sondages.
 
 Pour vous aidez, lisez l'[exemple de base de l'utilisation de l'object Request](http://expressjs.com/fr/4x/api.html#req).
 
-N'oubliez pas de traiter le cas où le formulaire n'est pas traité.
+N'oubliez pas de traiter le cas où le formulaire n'existe pas.
 
 ## Enregistrer les réponses aux sondage
 
