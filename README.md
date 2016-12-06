@@ -6,6 +6,8 @@ Ce dépôt git va vous guider pour développer une telle application.
 
 ## Pour commencer
 
+Démarrer votre machine sous Ubuntu. Comme éditeur, vous pouvez utiliser Atom.
+
 Cloner ce dépôt : `git clone https://github.com/dreimert/cours-javascript-td3.git`.
 
 Attention, si vous êtes derrière un proxy, il faut le prendre en compte. Par exemple, à Télécom Saint-Etienne il faut faire la manipulation suivante :
