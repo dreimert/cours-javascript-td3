@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/dreimert/cours-javascript-td3/issues"
   },
-  "homepage": "https://github.com/dreimert/cours-javascript-td3#readme"
+  "homepage": "https://github.com/dreimert/cours-javascript-td3#readme",
+  "dependencies": {
+    "express": "^4.14.0"
+  }
 }
