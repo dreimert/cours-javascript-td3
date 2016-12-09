@@ -43,6 +43,38 @@ app.post('/nouveau', function (req, res) {
   console.log(sondages);
 });
 
+app.get('/sondage/:id', function (req, res) {
+  id = parseInt(req.params.id);
+  let sondage = sondages[id];
+  if(sondage !== undefined) {
+    let html = `
+      <!DOCTYPE html>
+      <html>
+          <head>
+              <meta charset="utf-8" />
+              <title>${sondage.question}</title>
+          </head>
+
+          <body>
+            <h1>${sondage.question}</h1>
+            <form action="/sondage/${id}" method="post">
+              <div id="options">
+                ${sondage.options1} <input type="radio" name="options" value="${sondage.options1}" /><br />
+                ${sondage.options2} <input type="radio" name="options" value="${sondage.options2}" /><br />
+              </div>
+              <input type="submit" value="Voter" />
+            </form>
+          </body>
+      </html>
+    `;
+
+
+    res.send(html);
+  } else {
+    res.send("Sondage introuvable.");
+  }
+});
+
 app.listen(8000, function () {
   console.log('Example app listening on port 8000!');
 });
