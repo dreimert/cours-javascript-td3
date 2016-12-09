@@ -2,6 +2,8 @@ var express = require('express');
 var bodyParser = require('body-parser');
 var app = express();
 
+let sondages = [];
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
@@ -13,7 +15,8 @@ app.use(express.static('views'));
 
 app.post('/nouveau', function (req, res) {
   res.send('Formulaire reçu.');
-  console.log(req.body);
+  sondages.push(req.body);
+  console.log(sondages);
 });
 
 app.listen(8000, function () {
