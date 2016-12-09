@@ -1,73 +1,75 @@
-# Cours de Javascript : TD 3 - étape 1
+# Cours de Javascript : TD 3 - étape 2
 
 ## Cahier des charges
 
-Un client vous a contacté pour pour réaliser une application de sondage en ligne. Après discussion, il vous a transmit le cahier des charges suivants :
+Votre client vient de vous recontacter pour préciser le cahier des charges :
 
-* L'application doit être utilisable depuis un navigateur web.
-* Le serveur doit être écrit en node.js.
-* Il ne doit pas y avoir de Javascript coté client.
-* Il va vous transmettre le design des pages HTML à utiliser.
+* [x] L'application doit être utilisable depuis un navigateur web.
+* [x] Le serveur doit être écrit en node.js.
+* [ ] Il ne doit pas y avoir de Javascript coté client.
+* [ ] Quand l'utilisateur arrive sur l'application, un formulaire pour créer un sondage doit lui être proposé.
+* [ ] Un sondage est constitué d'une question et de deux choix possibles.
+* [ ] Quand l'utilisateur se rend sur `/liste`, il doit trouver la liste de tous les sondages.
+* [ ] Dans la liste des sondages, il doit être rediriger vers la page du sondage.
+* [ ] Sur la page du sondage, il doit pouvoir répondre au sondage.
 
-## Création du projet
+Il vous a transmis des exemples de pages HTML à utiliser. Elles sont dans le dossier *views*.
 
-Il faut commencer par initialiser le projet. Nous allons utiliser pour ce faire l'outil de gestion des paquets de Node.js : npm.
+## Retourner le formulaire de création d'un sondage.
 
-En utilisant la documentation de [`npm init`](https://docs.npmjs.com/cli/init), du [`package.json`](https://docs.npmjs.com/files/package.json) et à l'aide de votre terminal préféré, créez un fichier *package.json* qui aura pour valeur de la propriété *name* "sondage".
+À l'aide de la [document de Express](http://expressjs.com/fr/starter/static-files.html), fait en sorte que l'ouverture de http://localhost:8000/nouveau.html affiche le formulaire de création d'un sondage.
 
-> ### Q1 - À quoi sert `npm init` ?
+> ### Q1 - Que se passe-t'il quand vous validez le formulaire ? Pourquoi ?
 
-## Installation des dépendances
+## Traiter le formulaire
 
-Node.js propose dans ses bibliothèques standards un serveur http. Vous pouvez trouver la documentation à cette url : https://nodejs.org/api/http.html.
+À l'aide de la [documentation sur le routage](http://expressjs.com/fr/guide/routing.html), faite en sorte qu'un message "Formulaire reçu." apparaisse quand celui-ci est soumis.
 
-Cette API est un peu brute et de nombreuses bibliothèques tierces proposent des implémentations ou des sur-couches plus simple d'usage.
+Il faut maintenant traiter les données reçues pour les stocker. En HTML, les données envoyées par un formulaire sont dans son *body*. Prenez connaissance de la [documentation de *req.body*](http://expressjs.com/fr/4x/api.html#req.body) et de [body-parser](https://github.com/expressjs/body-parser). Modifier votre code pour que lors de la réception d'un formulaire par le serveur, il affiche sont contenu dans la console.
 
-Nous allons utiliser Express : http://expressjs.com/.
+> ### Q2 - Qu'est qu'un middleware ?
 
-En utilisant la [documentation de mise en route](http://expressjs.com/fr/starter/installing.html), installez Express dans le projet. Votre fichier *package.json* doit contenir une référence à Express.
+Notre but est d'afficher une liste des formulaires, il faut donc stocker ce formulaire. Pour le moment, on va le faire en mémoire. Déclarer au début de votre code un tableau vide appelé *sondages*. À chaque fois que le serveur reçoit un sondage, il doit le stocker dans ce tableau.
 
-> ### Q2 - À quoi sert l'option `--save` de `npm install` ?
+> ### Q3 - Que ce passe-t'il quand vous modifier du code et que votre serveur redémarre ? Quelle serait la bonne solution ?
 
-## Écrire un serveur avec Node.js
+## Afficher la liste des formulaires
 
-Vous allez maintenant pouvoir écrire du code. Pour ce faire, vous pouvez utiliser [Atom](https://atom.io/). C'est un IDE écrit en Javascript, HTML et CSS.
+L'utilisateur peut créer des sondages et ils sont sauvegardés par votre serveur. Il faut maintenant afficher la liste des sondages.
 
-En utilisant l'[exemple de la documentation de Express](http://expressjs.com/fr/starter/hello-world.html), écrivez un serveur qui répond sur le port 8000. Il faut que quand on ouvre http://localhost:8000 avec un navigateur web, l'expression "Bonjour !" s'affiche à l'écran. Le nom du fichier contenant le code du serveur doit être *index.js*.
+Pour ce faire, il faut lire votre base de données de sondage et les envoyer au navigateur. Vous pouvez faire cela en pur Javascript et en utilisant la fonction *res.send*.
 
-> ### Q3 - Que fait `res.send` ?
-> ### Q4 - Que fait `app.listen` ?
+Pour vous faciliter cette tâche en Javascript, vous pouvez utiliser les chaînes de caractères utilisant l'[accent grave](https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Litt%C3%A9raux_gabarits) (\`) et l'[interpolation](https://fr.wikipedia.org/wiki/Interpolation). Exemple :
 
-## Lancer le serveur
+```Javascript
+let html = `
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <title>Nouveau sondage</title>
+    </head>
+    <body>
+      ${votreCodeHtmlPensezAEtrePlusSubtil}
+    </body>
+</html>
+`;
+```
 
-Pour lancer le serveur, dans un terminal, exécutez votre code avec node : `node index.js`.
+Nous verrons une autre solution pour faire cela à la prochaine étape.
 
-Vous pouvez maintenant aller sur http://localhost:8000 avec votre navigateur web.
+## Répondre aux sondages
 
-## npm start
+En appliquant les connaissances acquises précédemment, affichez les sondages.
 
-Une bonne pratique quand on développe en node.js est de pouvoir lancer son code avec npm et la commande `npm start`.
+Pour vous aidez, lisez l'[exemple de base de l'utilisation de l'object Request](http://expressjs.com/fr/4x/api.html#req).
 
-> ### Q5 - Que fait cette commande actuellement ?
+N'oubliez pas de traiter le cas où le formulaire n'existe pas.
 
-En utlisant [cette documentation](https://docs.npmjs.com/cli/start) et les documentations connexes, fait en sorte que `npm start` lance votre serveur.
+## Enregistrer les réponses aux sondage
 
-## Outils de développement.
+En appliquant les connaissances acquises précédemment, enregistrez les réponses aux sondages.
 
-Modifiez votre code pour que le serveur répondre sur le port 8001 au lieu du 8000.
+## Cahier des charges rempli
 
-> ### Q6 - Que devez-vous faire pour que les modifications soient prises en compte ?
-
-Cette tâche peut rapidement être pénible. Nous allons l'automatiser.
-
-En utilisant la documentation de [nodemon](https://github.com/remy/nodemon) et la documentation de [npm](https://docs.npmjs.com/), faite en sorte que la commande `npm run dev` lancer et relance automatiquement votre code quand il y a des modifications.
-
-> ### Q7 - Que fait l'option `--save-dev` de `npm install` ?
-
-Modifier votre code pour remettre sur le port 8000. Vérifier que les modifications sont bien prises en compte automatiquement.
-
-## La suite...
-
-Vous avez maintenant un environment de travail minimal et un serveur qui répond sur le port 8000.
-
-Nous allons pouvoir implémenter le cahier des charges du client en passant à l'étape 2 : `git checkout etape-2`.
+Vous avez maintenant rempli le cahier des charges du client. Vous pouvez passer à l'étape suivante : `git checkout etape-3`
