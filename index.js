@@ -2,7 +2,7 @@ var express = require('express');
 var bodyParser = require('body-parser');
 var app = express();
 
-let sondages = [];
+let sondages = [ { question: 'Sondage de démonstration ?', options1: 'oui', options2: 'non' } ];
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -11,6 +11,7 @@ app.get('/', function (req, res) {
   res.send('Bonjour !');
 });
 
+// En déclarant avant express.static, on intercepte l'appel avant lui.
 app.get('/liste.html', function (req, res) {
   let liste = sondages.map(function(sondage, index){
     return `<li><a href="/sondage/${index}">${sondage.question}</a></li>`;
