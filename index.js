@@ -5,6 +5,8 @@ app.get('/', function (req, res) {
   res.send('Bonjour !');
 });
 
+app.use(express.static('views'));
+
 app.listen(8000, function () {
   console.log('Example app listening on port 8000!');
 });
