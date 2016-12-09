@@ -2,7 +2,7 @@ var express = require('express');
 var bodyParser = require('body-parser');
 var app = express();
 
-let sondages = [ { question: 'Sondage de démonstration ?', options1: 'oui', options2: 'non' } ];
+let sondages = [ { question: 'Sondage de démonstration ?', options1: 'oui', options2: 'non' , reponses: []} ];
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -39,6 +39,7 @@ app.use(express.static('views'));
 
 app.post('/nouveau', function (req, res) {
   res.send('Formulaire reçu.');
+  req.body.reponses = [];
   sondages.push(req.body);
   console.log(sondages);
 });
@@ -70,6 +71,18 @@ app.get('/sondage/:id', function (req, res) {
 
 
     res.send(html);
+  } else {
+    res.send("Sondage introuvable.");
+  }
+});
+
+app.post('/sondage/:id', function (req, res) {
+  id = parseInt(req.params.id);
+  let sondage = sondages[id];
+  if(sondage !== undefined) {
+    sondage.reponses.push(req.body.options);
+    res.send("Votre réponse a été enregistré");
+    console.log(sondage);
   } else {
     res.send("Sondage introuvable.");
   }
