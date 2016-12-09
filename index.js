@@ -11,6 +11,29 @@ app.get('/', function (req, res) {
   res.send('Bonjour !');
 });
 
+app.get('/liste.html', function (req, res) {
+  let liste = sondages.map(function(sondage, index){
+    return `<li><a href="/sondage/${index}">${sondage.question}</a></li>`;
+  });
+
+  let html = `
+    <!DOCTYPE html>
+    <html>
+        <head>
+            <meta charset="utf-8" />
+            <title>Nouveau sondage</title>
+        </head>
+        <body>
+          <ul>
+            ${liste.join('\n')}
+          </ul>
+        </body>
+    </html>
+  `;
+
+  res.send(html);
+});
+
 app.use(express.static('views'));
 
 app.post('/nouveau', function (req, res) {
