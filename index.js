@@ -44,48 +44,46 @@ app.post('/nouveau', function (req, res) {
   console.log(sondages);
 });
 
-app.get('/sondage/:id', function (req, res) {
-  id = parseInt(req.params.id);
-  let sondage = sondages[id];
-  if(sondage !== undefined) {
-    let html = `
-      <!DOCTYPE html>
-      <html>
-          <head>
-              <meta charset="utf-8" />
-              <title>${sondage.question}</title>
-          </head>
-
-          <body>
-            <h1>${sondage.question}</h1>
-            <form action="/sondage/${id}" method="post">
-              <div id="options">
-                ${sondage.options1} <input type="radio" name="options" value="${sondage.options1}" /><br />
-                ${sondage.options2} <input type="radio" name="options" value="${sondage.options2}" /><br />
-              </div>
-              <input type="submit" value="Voter" />
-            </form>
-          </body>
-      </html>
-    `;
-
-
-    res.send(html);
+let sondageExiste = function(req, res, next) {
+  let sondage = sondages[req.params.id];
+  if(sondage) {
+    req.sondage = sondage;
+    next();
   } else {
     res.send("Sondage introuvable.");
   }
+}
+
+app.get('/sondage/:id', sondageExiste, function (req, res) {
+  let html = `
+    <!DOCTYPE html>
+    <html>
+        <head>
+            <meta charset="utf-8" />
+            <title>${req.sondage.question}</title>
+        </head>
+
+        <body>
+          <h1>${req.sondage.question}</h1>
+          <form action="/sondage/${req.params.id}" method="post">
+            <div id="options">
+              ${req.sondage.options1} <input type="radio" name="options" value="${req.sondage.options1}" /><br />
+              ${req.sondage.options2} <input type="radio" name="options" value="${req.sondage.options2}" /><br />
+            </div>
+            <input type="submit" value="Voter" />
+          </form>
+        </body>
+    </html>
+  `;
+
+  res.send(html);
+
 });
 
-app.post('/sondage/:id', function (req, res) {
-  id = parseInt(req.params.id);
-  let sondage = sondages[id];
-  if(sondage !== undefined) {
-    sondage.reponses.push(req.body.options);
-    res.send("Votre réponse a été enregistré");
-    console.log(sondage);
-  } else {
-    res.send("Sondage introuvable.");
-  }
+app.post('/sondage/:id', sondageExiste, function (req, res) {
+  req.sondage.reponses.push(req.body.options);
+  res.send("Votre réponse a été enregistré");
+  console.log(req.sondage);
 });
 
 app.listen(8000, function () {
