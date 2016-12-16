@@ -58,7 +58,7 @@ let html = `
 
 Nous verrons une autre solution pour faire cela à la prochaine étape.
 
-## Répondre aux sondages
+## Afficher un sondage
 
 En appliquant les connaissances acquises précédemment, affichez les sondages.
 
